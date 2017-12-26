@@ -21,6 +21,7 @@ public class IndexController {
 
   @GetMapping("/")
   public String index() {
+    System.out.println(1122);
     return "redirect:/adminlogin";
   }
 

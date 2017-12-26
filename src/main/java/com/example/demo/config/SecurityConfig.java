@@ -16,6 +16,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -33,6 +36,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   private MyValidateCodeAuthenticationFilter myValidateCodeAuthenticationFilter;
   @Autowired
   private PersistentTokenService persistentTokenService;
+  @Autowired
+  private AuthenticationManager authenticationManager;
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
@@ -40,12 +45,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers("/admin/**")
         .authenticated();
 
-    http.formLogin()
-        .loginPage("/adminlogin")
-        .loginProcessingUrl("/adminlogin")
-        .failureUrl("/adminlogin?error")
-        .defaultSuccessUrl("/admin/dashboard")
-        .permitAll();
+//    http.formLogin()
+//        .loginPage("/adminlogin")
+//        .loginProcessingUrl("/adminlogin")
+//        .failureUrl("/adminlogin?error")
+//        .defaultSuccessUrl("/admin/dashboard")
+//        .permitAll();
 
     http.rememberMe().key("remember-me").rememberMeServices(persistentTokenBasedRememberMeServices());
 
@@ -55,10 +60,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .deleteCookies("JSESSIONID", "remember-me");
 
     http.addFilterBefore(myFilterSecurityInterceptor, FilterSecurityInterceptor.class);
-    http.addFilterBefore(myValidateCodeAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+    http.addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
     http.csrf().ignoringAntMatchers("/favicon.ico");
+  }
 
+  @Bean
+  public MyValidateCodeAuthenticationFilter authenticationFilter() throws Exception {
+    MyValidateCodeAuthenticationFilter authFilter = new MyValidateCodeAuthenticationFilter();
+    authFilter.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/adminlogin", "POST"));
+    authFilter.setAuthenticationManager(authenticationManager);
+    return authFilter;
   }
 
   @Override
@@ -69,12 +81,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     auth.userDetailsService(myUserDetailService).passwordEncoder(new BCryptPasswordEncoder());
-  }
-
-  @Override
-  @Bean
-  public AuthenticationManager authenticationManagerBean() throws Exception {
-    return super.authenticationManagerBean();
   }
 
   @Bean

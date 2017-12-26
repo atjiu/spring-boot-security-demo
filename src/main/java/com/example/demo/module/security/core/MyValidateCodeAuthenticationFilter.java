@@ -6,14 +6,16 @@ import com.example.demo.module.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
@@ -22,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Calendar;
 import java.util.Date;
 
-@Service
+@Component
 public class MyValidateCodeAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
   @Autowired
@@ -35,6 +37,7 @@ public class MyValidateCodeAuthenticationFilter extends UsernamePasswordAuthenti
   @PostConstruct
   public void init() {
     String failureUrl = "/adminlogin?error";
+    setAuthenticationSuccessHandler(new SimpleUrlAuthenticationSuccessHandler("/admin/dashboard"));
     setAuthenticationFailureHandler(new SimpleUrlAuthenticationFailureHandler(failureUrl));
     setRememberMeServices(persistentTokenBasedRememberMeServices);
   }
@@ -76,7 +79,8 @@ public class MyValidateCodeAuthenticationFilter extends UsernamePasswordAuthenti
       }
     }
     // 验证密码是否正确
-    if (new BCryptPasswordEncoder().matches(obtainPassword(request), user.getPassword())) {
+    String password = obtainPassword(request);
+    if (new BCryptPasswordEncoder().matches(password, user.getPassword())) {
       user.setAttempts(0);
       user.setAttemptsTime(new Date());
       userService.save(user);

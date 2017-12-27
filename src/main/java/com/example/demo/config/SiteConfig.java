@@ -14,6 +14,15 @@ public class SiteConfig {
 	private Integer attempts;
 	private Integer attemptsWaitTime;
 	private Integer loginPoints;
+	private Integer pageSize;
+
+	public Integer getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(Integer pageSize) {
+		this.pageSize = pageSize;
+	}
 
 	public Integer getAttempts() {
 		return attempts;

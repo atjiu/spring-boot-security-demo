@@ -1,7 +1,5 @@
 package com.example.demo.config;
 
-import com.example.demo.module.user.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,9 +11,6 @@ import java.util.Set;
 
 @Component
 public class SpringSecurityTag {
-
-	@Autowired
-	private UserService userService;
 
 	/**
 	 * Get user block status

@@ -19,7 +19,7 @@
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="/static/adminlte/dist/css/skins/_all-skins.min.css">
   <!-- iCheck -->
-  <link rel="stylesheet" href="/static/adminlte/plugins/iCheck/flat/blue.css">
+  <link rel="stylesheet" href="/static/adminlte/plugins/iCheck/all.css">
   <!-- Morris chart -->
   <link rel="stylesheet" href="/static/adminlte/plugins/morris/morris.css">
   <!-- jvectormap -->
@@ -48,10 +48,13 @@
     </div>
     <#include "./footer.ftl"/>
   </div>
+</#macro>
+<#--js content-->
+<#macro javascript>
 <script src="/static/adminlte/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 <script>
-  $.widget.bridge('uibutton', $.ui.button);
+	$.widget.bridge('uibutton', $.ui.button);
 </script>
 <script src="/static/adminlte/bootstrap/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
@@ -68,6 +71,7 @@
 <script src="/static/adminlte/dist/js/app.min.js"></script>
 <script src="/static/adminlte/plugins/iCheck/icheck.min.js"></script>
 <script src="/static/adminlte/dist/js/demo.js"></script>
+<#nested />
 </body>
 </html>
 </#macro>

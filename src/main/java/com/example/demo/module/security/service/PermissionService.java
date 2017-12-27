@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Created by tomoya at 12/26/17
@@ -25,10 +24,6 @@ public class PermissionService {
 	private PermissionRepository permissionRepository;
 	@Autowired
 	private UserService userService;
-
-	public Permission findByName(String name) {
-		return permissionRepository.findByName(name);
-	}
 
 	/**
 	 * 根据pid查询权限
@@ -64,25 +59,14 @@ public class PermissionService {
 	/**
 	 * 根据用户的id查询用户的所有权限
 	 *
-	 * @param adminUserId
+	 * @param userId
 	 * @return
 	 */
-	public List<Permission> findByAdminUserId(int adminUserId) {
-		User user = userService.findById(adminUserId);
+	public List<Permission> findByAdminUserId(int userId) {
+		User user = userService.findById(userId);
 		List<Permission> permissions = new ArrayList<>();
-		if (user.getRoles().size() > 0) {
-			user.getRoles()
-					.stream()
-					.filter(role -> role.getPermissions().size() > 0)
-					.forEach(role -> {
-								permissions.addAll(
-										role.getPermissions()
-												.stream()
-												.filter(permission -> permission.getPid() > 0)
-												.collect(Collectors.toList())
-								);
-							}
-					);
+		if(user.getRole().getPermissions().size() > 0) {
+			permissions.addAll(user.getRole().getPermissions());
 		}
 		return permissions;
 	}

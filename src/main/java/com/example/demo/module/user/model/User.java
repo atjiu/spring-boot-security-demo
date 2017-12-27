@@ -5,7 +5,6 @@ import com.example.demo.module.security.model.Role;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -36,17 +35,9 @@ public class User implements Serializable {
 	@Column(name = "attempts_time")
 	private Date attemptsTime;
 
-	// 用户与角色的关联关系
-	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-	@JoinTable(
-			joinColumns = {
-					@JoinColumn(name = "user_id")
-			},
-			inverseJoinColumns = {
-					@JoinColumn(name = "role_id")
-			}
-	)
-	private Set<Role> roles = new HashSet<>();
+	@ManyToOne
+	@JoinColumn(name = "role_id")
+	private Role role;
 
 	public Integer getId() {
 		return id;
@@ -88,12 +79,12 @@ public class User implements Serializable {
 		this.block = block;
 	}
 
-	public Set<Role> getRoles() {
-		return roles;
+	public Role getRole() {
+		return role;
 	}
 
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
+	public void setRole(Role role) {
+		this.role = role;
 	}
 
 	public int getAttempts() {

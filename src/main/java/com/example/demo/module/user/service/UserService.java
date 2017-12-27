@@ -1,5 +1,6 @@
 package com.example.demo.module.user.service;
 
+import com.example.demo.module.security.model.Role;
 import com.example.demo.module.user.model.User;
 import com.example.demo.module.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +8,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 /**
  * Created by tomoya at 12/26/17
@@ -20,47 +23,28 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
-	/**
-	 * search user by score desc
-	 *
-	 * @param p
-	 * @param size
-	 * @return
-	 */
-	public Page<User> findByScore(int p, int size) {
-		Sort sort = new Sort(new Sort.Order(Sort.Direction.DESC, "score"));
-		Pageable pageable = new PageRequest(p - 1, size, sort);
-		return userRepository.findByBlock(false, pageable);
-	}
-
 	public User findById(int id) {
 		return userRepository.findById(id);
 	}
 
-	/**
-	 * 根据用户名判断是否存在
-	 *
-	 * @param username
-	 * @return
-	 */
 	public User findByUsername(String username) {
 		return userRepository.findByUsername(username);
 	}
 
-	public void save(User user) {
-		userRepository.save(user);
+	public User save(User user) {
+		return userRepository.save(user);
 	}
 
-	/**
-	 * 分页查询用户列表
-	 *
-	 * @param p
-	 * @param size
-	 * @return
-	 */
-	public Page<User> pageUser(int p, int size) {
+	public User save(User user, Integer roleId) {
+		Role role = new Role();
+		role.setId(roleId);
+		user.setRole(role);
+		return userRepository.save(user);
+	}
+
+	public Page<User> page(Integer pageNo, Integer pageSize) {
 		Sort sort = new Sort(new Sort.Order(Sort.Direction.DESC, "inTime"));
-		Pageable pageable = new PageRequest(p - 1, size, sort);
+		Pageable pageable = new PageRequest(pageNo - 1, pageSize, sort);
 		return userRepository.findAll(pageable);
 	}
 
@@ -69,10 +53,10 @@ public class UserService {
 	 *
 	 * @param id
 	 */
-	public void blockUser(Integer id) {
+	public void block(Integer id) {
 		User user = findById(id);
 		user.setBlock(true);
-		save(user);
+		userRepository.save(user);
 	}
 
 	/**
@@ -80,10 +64,25 @@ public class UserService {
 	 *
 	 * @param id
 	 */
-	public void unBlockUser(Integer id) {
+	public void unBlock(Integer id) {
 		User user = findById(id);
 		user.setBlock(false);
-		save(user);
+		userRepository.save(user);
+	}
+
+	public void deleteById(Integer id) {
+		userRepository.deleteById(id);
+	}
+
+	public void update(Integer id, String password, Integer roleId) {
+		User user = findById(id);
+		if(!StringUtils.isEmpty(password)) {
+			user.setPassword(new BCryptPasswordEncoder().encode(password));
+		}
+		Role role = new Role();
+		role.setId(roleId);
+		user.setRole(role);
+		userRepository.save(user);
 	}
 
 }

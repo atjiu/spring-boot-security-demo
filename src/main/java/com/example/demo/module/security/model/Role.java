@@ -24,9 +24,6 @@ public class Role implements Serializable {
 	// 权限描述
 	private String description;
 
-	@ManyToMany(mappedBy = "roles")
-	private Set<User> users = new HashSet<>();
-
 	// 角色与权限的关联关系
 	@ManyToMany(cascade = CascadeType.PERSIST)
 	@JoinTable(joinColumns = {@JoinColumn(name = "role_id")}, inverseJoinColumns = {
@@ -55,14 +52,6 @@ public class Role implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public Set<User> getUsers() {
-		return users;
-	}
-
-	public void setUsers(Set<User> users) {
-		this.users = users;
 	}
 
 	public Set<Permission> getPermissions() {

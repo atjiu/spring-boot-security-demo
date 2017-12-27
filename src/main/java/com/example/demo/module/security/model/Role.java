@@ -13,63 +13,63 @@ import java.util.Set;
 @Entity
 public class Role implements Serializable {
 
-  @Id
-  @GeneratedValue
-  private int id;
+	@Id
+	@GeneratedValue
+	private int id;
 
-  // 权限标识
-  @Column(unique = true)
-  private String name;
+	// 权限标识
+	@Column(unique = true)
+	private String name;
 
-  // 权限描述
-  private String description;
+	// 权限描述
+	private String description;
 
-  @ManyToMany(mappedBy = "roles")
-  private Set<User> users = new HashSet<>();
+	@ManyToMany(mappedBy = "roles")
+	private Set<User> users = new HashSet<>();
 
-  // 角色与权限的关联关系
-  @ManyToMany(cascade = CascadeType.PERSIST)
-  @JoinTable(joinColumns = {@JoinColumn(name = "role_id")}, inverseJoinColumns = {
-      @JoinColumn(name = "permission_id")})
-  private Set<Permission> permissions = new HashSet<>();
+	// 角色与权限的关联关系
+	@ManyToMany(cascade = CascadeType.PERSIST)
+	@JoinTable(joinColumns = {@JoinColumn(name = "role_id")}, inverseJoinColumns = {
+			@JoinColumn(name = "permission_id")})
+	private Set<Permission> permissions = new HashSet<>();
 
-  public int getId() {
-    return id;
-  }
+	public int getId() {
+		return id;
+	}
 
-  public void setId(int id) {
-    this.id = id;
-  }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-  public String getName() {
-    return name;
-  }
+	public String getName() {
+		return name;
+	}
 
-  public void setName(String name) {
-    this.name = name;
-  }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-  public String getDescription() {
-    return description;
-  }
+	public String getDescription() {
+		return description;
+	}
 
-  public void setDescription(String description) {
-    this.description = description;
-  }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-  public Set<User> getUsers() {
-    return users;
-  }
+	public Set<User> getUsers() {
+		return users;
+	}
 
-  public void setUsers(Set<User> users) {
-    this.users = users;
-  }
+	public void setUsers(Set<User> users) {
+		this.users = users;
+	}
 
-  public Set<Permission> getPermissions() {
-    return permissions;
-  }
+	public Set<Permission> getPermissions() {
+		return permissions;
+	}
 
-  public void setPermissions(Set<Permission> permissions) {
-    this.permissions = permissions;
-  }
+	public void setPermissions(Set<Permission> permissions) {
+		this.permissions = permissions;
+	}
 }

@@ -11,31 +11,31 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "site")
 public class SiteConfig {
 
-  private Integer attempts;
-  private Integer attemptsWaitTime;
-  private Integer loginPoints;
+	private Integer attempts;
+	private Integer attemptsWaitTime;
+	private Integer loginPoints;
 
-  public Integer getAttempts() {
-    return attempts;
-  }
+	public Integer getAttempts() {
+		return attempts;
+	}
 
-  public void setAttempts(Integer attempts) {
-    this.attempts = attempts;
-  }
+	public void setAttempts(Integer attempts) {
+		this.attempts = attempts;
+	}
 
-  public Integer getAttemptsWaitTime() {
-    return attemptsWaitTime;
-  }
+	public Integer getAttemptsWaitTime() {
+		return attemptsWaitTime;
+	}
 
-  public void setAttemptsWaitTime(Integer attemptsWaitTime) {
-    this.attemptsWaitTime = attemptsWaitTime;
-  }
+	public void setAttemptsWaitTime(Integer attemptsWaitTime) {
+		this.attemptsWaitTime = attemptsWaitTime;
+	}
 
-  public Integer getLoginPoints() {
-    return loginPoints;
-  }
+	public Integer getLoginPoints() {
+		return loginPoints;
+	}
 
-  public void setLoginPoints(Integer loginPoints) {
-    this.loginPoints = loginPoints;
-  }
+	public void setLoginPoints(Integer loginPoints) {
+		this.loginPoints = loginPoints;
+	}
 }

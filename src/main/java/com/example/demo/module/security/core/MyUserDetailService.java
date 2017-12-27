@@ -19,28 +19,28 @@ import java.util.List;
 @Service
 public class MyUserDetailService implements UserDetailsService {
 
-  private Logger log = Logger.getLogger(MyUserDetailService.class);
+	private Logger log = Logger.getLogger(MyUserDetailService.class);
 
-  @Autowired
-  private UserService userService;
-  @Autowired
-  private PermissionService permissionService;
+	@Autowired
+	private UserService userService;
+	@Autowired
+	private PermissionService permissionService;
 
-  public UserDetails loadUserByUsername(String username) {
-    User user = userService.findByUsername(username);
-    if (user != null) {
-      List<Permission> permissions = permissionService.findByAdminUserId(user.getId());
-      List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-      for (Permission permission : permissions) {
-        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(permission.getName());
-        grantedAuthorities.add(grantedAuthority);
-      }
-      return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-          true, true, true, !user.getBlock(), grantedAuthorities);
-    } else {
-      log.info("User: " + username + " not exist");
-      throw new UsernameNotFoundException("Username or password incorrect");
-    }
-  }
+	public UserDetails loadUserByUsername(String username) {
+		User user = userService.findByUsername(username);
+		if (user != null) {
+			List<Permission> permissions = permissionService.findByAdminUserId(user.getId());
+			List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+			for (Permission permission : permissions) {
+				GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(permission.getName());
+				grantedAuthorities.add(grantedAuthority);
+			}
+			return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+					true, true, true, !user.getBlock(), grantedAuthorities);
+		} else {
+			log.info("User: " + username + " not exist");
+			throw new UsernameNotFoundException("Username or password incorrect");
+		}
+	}
 
 }

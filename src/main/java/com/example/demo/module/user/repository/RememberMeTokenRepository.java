@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface RememberMeTokenRepository extends JpaRepository<RememberMeToken, Integer> {
-  RememberMeToken getBySeries(String series);
+	RememberMeToken getBySeries(String series);
 
-  void deleteByUsername(String username);
+	void deleteByUsername(String username);
 
-  List<RememberMeToken> getAllByUsernameOrderByDate(String username);
+	List<RememberMeToken> getAllByUsernameOrderByDate(String username);
 }

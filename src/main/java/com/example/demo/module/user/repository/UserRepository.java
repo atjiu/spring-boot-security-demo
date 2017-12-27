@@ -12,12 +12,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-  User findById(int id);
+	User findById(int id);
 
-  Page<User> findByBlock(boolean block, Pageable pageable);
+	Page<User> findByBlock(boolean block, Pageable pageable);
 
-  User findByUsername(String username);
+	User findByUsername(String username);
 
-  void deleteById(int id);
+	void deleteById(int id);
 
 }

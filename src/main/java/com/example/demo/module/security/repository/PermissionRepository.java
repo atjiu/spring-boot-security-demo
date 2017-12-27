@@ -12,16 +12,16 @@ import java.util.List;
 @Repository
 public interface PermissionRepository extends JpaRepository<Permission, Integer> {
 
-  Permission findByName(String name);
+	Permission findByName(String name);
 
-  Permission findById(int id);
+	Permission findById(int id);
 
-  List<Permission> findByPidGreaterThan(int pid);
+	List<Permission> findByPidGreaterThan(int pid);
 
-  List<Permission> findByPid(int pid);
+	List<Permission> findByPid(int pid);
 
-  void deleteByPid(int pid);
+	void deleteByPid(int pid);
 
-  void delete(Permission permission);
+	void delete(Permission permission);
 
 }

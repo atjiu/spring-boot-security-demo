@@ -11,16 +11,16 @@ import javax.annotation.PostConstruct;
 @Component
 public class FreemarkerConfig {
 
-  Logger log = LoggerFactory.getLogger(FreemarkerConfig.class);
+	Logger log = LoggerFactory.getLogger(FreemarkerConfig.class);
 
-  @Autowired
-  private freemarker.template.Configuration configuration;
-  @Autowired
-  private SpringSecurityTag springSecurityTag;
+	@Autowired
+	private freemarker.template.Configuration configuration;
+	@Autowired
+	private SpringSecurityTag springSecurityTag;
 
-  @PostConstruct
-  public void setSharedVariable() throws TemplateModelException {
-    configuration.setSharedVariable("sec", springSecurityTag);
-  }
+	@PostConstruct
+	public void setSharedVariable() throws TemplateModelException {
+		configuration.setSharedVariable("sec", springSecurityTag);
+	}
 
 }

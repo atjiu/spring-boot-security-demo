@@ -11,75 +11,75 @@ import java.util.Set;
 @Entity
 public class Permission implements Serializable {
 
-  @Id
-  @GeneratedValue
-  private Integer id;
+	@Id
+	@GeneratedValue
+	private Integer id;
 
-  // 权限名称
-  @Column(unique = true)
-  private String name;
+	// 权限名称
+	@Column(unique = true)
+	private String name;
 
-  // 权限描述
-  private String description;
+	// 权限描述
+	private String description;
 
-  // 授权链接
-  private String url;
+	// 授权链接
+	private String url;
 
-  // 父节点id
-  private Integer pid;
+	// 父节点id
+	private Integer pid;
 
-  /**
-   * 角色与权限的关联关系
-   * mappedBy: 就是 Role.class 里的 Set<Permission> 的对象名
-   */
-  @ManyToMany(mappedBy = "permissions")
-  private Set<Role> roles = new HashSet<>();
+	/**
+	 * 角色与权限的关联关系
+	 * mappedBy: 就是 Role.class 里的 Set<Permission> 的对象名
+	 */
+	@ManyToMany(mappedBy = "permissions")
+	private Set<Role> roles = new HashSet<>();
 
-  public Integer getId() {
-    return id;
-  }
+	public Integer getId() {
+		return id;
+	}
 
-  public void setId(Integer id) {
-    this.id = id;
-  }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-  public String getName() {
-    return name;
-  }
+	public String getName() {
+		return name;
+	}
 
-  public void setName(String name) {
-    this.name = name;
-  }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-  public String getDescription() {
-    return description;
-  }
+	public String getDescription() {
+		return description;
+	}
 
-  public void setDescription(String description) {
-    this.description = description;
-  }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-  public String getUrl() {
-    return url;
-  }
+	public String getUrl() {
+		return url;
+	}
 
-  public void setUrl(String url) {
-    this.url = url;
-  }
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
-  public Integer getPid() {
-    return pid;
-  }
+	public Integer getPid() {
+		return pid;
+	}
 
-  public void setPid(Integer pid) {
-    this.pid = pid;
-  }
+	public void setPid(Integer pid) {
+		this.pid = pid;
+	}
 
-  public Set<Role> getRoles() {
-    return roles;
-  }
+	public Set<Role> getRoles() {
+		return roles;
+	}
 
-  public void setRoles(Set<Role> roles) {
-    this.roles = roles;
-  }
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
 }

@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/admin")
 public class IndexAdminController {
 
-  @GetMapping("/dashboard")
-  public String dashboard() {
-    return "admin/dashboard";
-  }
+	@GetMapping("/dashboard")
+	public String dashboard() {
+		return "admin/dashboard";
+	}
 
-  @GetMapping("/test")
-  public String test() {
-    return "admin/test";
-  }
+	@GetMapping("/test")
+	public String test() {
+		return "admin/test";
+	}
 }

@@ -26,11 +26,9 @@ public class MyAccessDecisionManager implements AccessDecisionManager {
 		if (null == configAttributes || configAttributes.size() <= 0) {
 			return;
 		}
-		ConfigAttribute c;
 		String needRole;
-		for (Iterator<ConfigAttribute> iter = configAttributes.iterator(); iter.hasNext(); ) {
-			c = iter.next();
-			needRole = c.getAttribute();
+		for (ConfigAttribute configAttribute : configAttributes) {
+			needRole = configAttribute.getAttribute();
 			for (GrantedAuthority ga : authentication.getAuthorities()) {
 				if (needRole.trim().equals(ga.getAuthority())) {
 					return;

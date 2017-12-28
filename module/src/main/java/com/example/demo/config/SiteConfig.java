@@ -1,19 +1,28 @@
 package com.example.demo.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 /**
  * Created by tomoya at 12/26/17
  */
 @Configuration
-@ConfigurationProperties(prefix = "site")
+@PropertySource("classpath:config.properties")
 public class SiteConfig {
 
+	@Value("${attempts}")
 	private Integer attempts;
+
+	@Value("${attemptsWaitTime}")
 	private Integer attemptsWaitTime;
+
+	@Value("${loginPoints}")
 	private Integer loginPoints;
+
+	@Value("${pageSize}")
 	private Integer pageSize;
 
 	public Integer getPageSize() {

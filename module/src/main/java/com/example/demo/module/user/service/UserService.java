@@ -1,5 +1,6 @@
 package com.example.demo.module.user.service;
 
+import com.example.demo.module.security.core.MyUserDetailService;
 import com.example.demo.module.security.model.Role;
 import com.example.demo.module.user.model.User;
 import com.example.demo.module.user.repository.UserRepository;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 /**
  * Created by tomoya at 12/26/17
  */
@@ -22,6 +25,8 @@ public class UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private MyUserDetailService myUserDetailService;
 
 	public User findById(int id) {
 		return userRepository.findById(id);
@@ -39,7 +44,10 @@ public class UserService {
 		Role role = new Role();
 		role.setId(roleId);
 		user.setRole(role);
-		return userRepository.save(user);
+		user = userRepository.save(user);
+		//更新用户的权限
+		myUserDetailService.loadUserByUsername(user.getUsername());
+		return user;
 	}
 
 	public Page<User> page(Integer pageNo, Integer pageSize) {
@@ -83,6 +91,11 @@ public class UserService {
 		role.setId(roleId);
 		user.setRole(role);
 		userRepository.save(user);
+	}
+
+	public void updatePermission() {
+		List<User> users = userRepository.findAll();
+		users.forEach(user -> myUserDetailService.loadUserByUsername(user.getUsername()));
 	}
 
 }

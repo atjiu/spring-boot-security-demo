@@ -1,7 +1,7 @@
 spring:
   freemarker:
     template-loader-path:
-    - file:./views/templates/
+    - file:./admin/views/templates/
   datasource:
     url: jdbc:mysql://localhost/spring-boot-security-demo?useSSL=false&characterEncoding=utf8
     username: root
@@ -17,9 +17,3 @@ spring:
     static-path-pattern: /static/**
     favicon:
       enabled: false
-
-site:
-  attempts: 5
-  attemptsWaitTime: 15 # 单位分钟
-  loginPoints: 2 # 登录点，最多2个位置登录，第三个登录点会覆盖第一个
-  pageSize: 20

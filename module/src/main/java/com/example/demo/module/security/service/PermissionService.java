@@ -1,5 +1,6 @@
 package com.example.demo.module.security.service;
 
+import com.example.demo.module.security.core.MyInvocationSecurityMetadataSource;
 import com.example.demo.module.security.model.Permission;
 import com.example.demo.module.security.repository.PermissionRepository;
 import com.example.demo.module.user.model.User;
@@ -24,6 +25,8 @@ public class PermissionService {
 	private PermissionRepository permissionRepository;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private MyInvocationSecurityMetadataSource myInvocationSecurityMetadataSource;
 
 	/**
 	 * 根据pid查询权限
@@ -73,6 +76,8 @@ public class PermissionService {
 
 	public void save(Permission permission) {
 		permissionRepository.save(permission);
+		//重新加载权限
+		myInvocationSecurityMetadataSource.loadResourceDefine();
 	}
 
 	/**
@@ -87,6 +92,8 @@ public class PermissionService {
 			permissionRepository.deleteByPid(permission.getId());
 		}
 		permissionRepository.delete(permission);
+		//重新加载权限
+		myInvocationSecurityMetadataSource.loadResourceDefine();
 	}
 
 	public Permission findById(int id) {

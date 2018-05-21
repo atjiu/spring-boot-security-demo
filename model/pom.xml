@@ -9,19 +9,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>admin</artifactId>
-
-  <dependencies>
-    <dependency>
-      <groupId>com.example</groupId>
-      <artifactId>model</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-freemarker</artifactId>
-    </dependency>
-  </dependencies>
+  <artifactId>model</artifactId>
 
 
 </project>

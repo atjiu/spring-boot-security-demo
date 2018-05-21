@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -94,7 +93,7 @@
       radioClass: 'iradio_square-blue',
       increaseArea: '20%' // optional
     });
-    $("#changeCode").click(function(){
+    $("#changeCode").click(function () {
       var date = new Date();
       $(this).attr("src", "/code?ver=" + date.getTime());
     })

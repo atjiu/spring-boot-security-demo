@@ -1,8 +1,6 @@
 server:
-  port: 8080
+  port: 8081
 spring:
-  freemarker:
-    template-loader-path: ["file:./admin/views/templates/", "classpath:/templates/"]
   datasource:
     url: jdbc:mysql://localhost/spring-boot-security-demo?useSSL=false&characterEncoding=utf8
     username: root
@@ -19,5 +17,3 @@ spring:
     static-path-pattern: /static/**
     favicon:
       enabled: false
-  resources:
-    static-locations: ["file:./admin/views/static/", "classpath:/static/"]

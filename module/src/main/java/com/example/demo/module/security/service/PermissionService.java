@@ -21,83 +21,83 @@ import java.util.Map;
 @Transactional
 public class PermissionService {
 
-	@Autowired
-	private PermissionRepository permissionRepository;
-	@Autowired
-	private UserService userService;
-	@Autowired
-	private MyInvocationSecurityMetadataSource myInvocationSecurityMetadataSource;
+  @Autowired
+  private PermissionRepository permissionRepository;
+  @Autowired
+  private UserService userService;
+  @Autowired
+  private MyInvocationSecurityMetadataSource myInvocationSecurityMetadataSource;
 
-	/**
-	 * 根据pid查询权限
-	 *
-	 * @param pid
-	 * @return
-	 */
-	public List<Permission> findByPid(int pid) {
-		return permissionRepository.findByPid(pid);
-	}
+  /**
+   * 根据pid查询权限
+   *
+   * @param pid
+   * @return
+   */
+  public List<Permission> findByPid(int pid) {
+    return permissionRepository.findByPid(pid);
+  }
 
-	/**
-	 * 查询权限列表
-	 *
-	 * @return
-	 */
-	public List findAll(boolean child) {
-		if (child) {
-			return permissionRepository.findByPidGreaterThan(0);
-		} else {
-			List list = new ArrayList();
-			List<Permission> permissions = this.findByPid(0);
-			for (Permission permission : permissions) {
-				Map map = new HashMap();
-				map.put("permission", permission);
-				map.put("childPermissions", this.findByPid(permission.getId()));
-				list.add(map);
-			}
-			return list;
-		}
-	}
+  /**
+   * 查询权限列表
+   *
+   * @return
+   */
+  public List findAll(boolean child) {
+    if (child) {
+      return permissionRepository.findByPidGreaterThan(0);
+    } else {
+      List list = new ArrayList();
+      List<Permission> permissions = this.findByPid(0);
+      for (Permission permission : permissions) {
+        Map map = new HashMap();
+        map.put("permission", permission);
+        map.put("childPermissions", this.findByPid(permission.getId()));
+        list.add(map);
+      }
+      return list;
+    }
+  }
 
-	/**
-	 * 根据用户的id查询用户的所有权限
-	 *
-	 * @param userId
-	 * @return
-	 */
-	public List<Permission> findByAdminUserId(int userId) {
-		User user = userService.findById(userId);
-		List<Permission> permissions = new ArrayList<>();
-		if(user.getRole().getPermissions().size() > 0) {
-			permissions.addAll(user.getRole().getPermissions());
-		}
-		return permissions;
-	}
+  /**
+   * 根据用户的id查询用户的所有权限
+   *
+   * @param userId
+   * @return
+   */
+  public List<Permission> findByAdminUserId(int userId) {
+    User user = userService.findById(userId);
+    List<Permission> permissions = new ArrayList<>();
+    if (user.getRole().getPermissions().size() > 0) {
+      permissions.addAll(user.getRole().getPermissions());
+    }
+    return permissions;
+  }
 
-	public void save(Permission permission) {
-		permissionRepository.save(permission);
-		//重新加载权限
-		myInvocationSecurityMetadataSource.loadResourceDefine();
-	}
+  public void save(Permission permission) {
+    permissionRepository.save(permission);
+    //重新加载权限
+    myInvocationSecurityMetadataSource.loadResourceDefine();
+  }
 
-	/**
-	 * 删除权限
-	 * 判断权限的pid是不是0，是的话，就删除其下所有的权限
-	 *
-	 * @param id
-	 */
-	public void deleteById(Integer id) {
-		Permission permission = findById(id);
-		if (permission.getPid() == 0) {
-			permissionRepository.deleteByPid(permission.getId());
-		}
-		permissionRepository.delete(permission);
-		//重新加载权限
-		myInvocationSecurityMetadataSource.loadResourceDefine();
-	}
+  /**
+   * 删除权限
+   * 判断权限的pid是不是0，是的话，就删除其下所有的权限
+   *
+   * @param id
+   */
+  public void deleteById(Integer id) {
+    Permission permission = findById(id);
+    if (permission.getPid() == 0) {
+      permissionRepository.deleteByPid(permission.getId());
+    }
+    permissionRepository.delete(permission);
+    //重新加载权限
+    myInvocationSecurityMetadataSource.loadResourceDefine();
+  }
 
-	public Permission findById(int id) {
-		return permissionRepository.findById(id);
-	}
+  public Permission findById(int id) {
+    return permissionRepository.findById(id);
+  }
 
 }

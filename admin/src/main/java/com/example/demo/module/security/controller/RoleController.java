@@ -17,46 +17,46 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/admin/role")
 public class RoleController {
 
-	@Autowired
-	private RoleService roleService;
-	@Autowired
-	private PermissionService permissionService;
+  @Autowired
+  private RoleService roleService;
+  @Autowired
+  private PermissionService permissionService;
 
-	@GetMapping("/list")
-	public String list(Model model) {
-		model.addAttribute("roles", roleService.findAll());
-		return "admin/role/list";
-	}
+  @GetMapping("/list")
+  public String list(Model model) {
+    model.addAttribute("roles", roleService.findAll());
+    return "admin/role/list";
+  }
 
-	@GetMapping("/add")
-	public String add(Model model) {
-		model.addAttribute("list", permissionService.findAll(false));
-		return "admin/role/add";
-	}
+  @GetMapping("/add")
+  public String add(Model model) {
+    model.addAttribute("list", permissionService.findAll(false));
+    return "admin/role/add";
+  }
 
-	@PostMapping("/add")
-	public String save(Role role, Integer[] permissionIds) {
-		roleService.save(role, permissionIds);
-		return "redirect:/admin/role/list";
-	}
+  @PostMapping("/add")
+  public String save(Role role, Integer[] permissionIds) {
+    roleService.save(role, permissionIds);
+    return "redirect:/admin/role/list";
+  }
 
-	@GetMapping("/edit")
-	public String edit(Integer id, Model model) {
-		model.addAttribute("list", permissionService.findAll(false));
-		model.addAttribute("role", roleService.findById(id));
-		return "admin/role/edit";
-	}
+  @GetMapping("/edit")
+  public String edit(Integer id, Model model) {
+    model.addAttribute("list", permissionService.findAll(false));
+    model.addAttribute("role", roleService.findById(id));
+    return "admin/role/edit";
+  }
 
-	@PostMapping("/edit")
-	public String update(Role role, Integer[] permissionIds) {
-		roleService.save(role, permissionIds);
-		return "redirect:/admin/role/list";
-	}
+  @PostMapping("/edit")
+  public String update(Role role, Integer[] permissionIds) {
+    roleService.save(role, permissionIds);
+    return "redirect:/admin/role/list";
+  }
 
-	@GetMapping("/delete")
-	public String delete(Integer id) {
-		roleService.deleteById(id);
-		return "redirect:/admin/role/list";
-	}
+  @GetMapping("/delete")
+  public String delete(Integer id) {
+    roleService.deleteById(id);
+    return "redirect:/admin/role/list";
+  }
 
 }

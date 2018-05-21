@@ -24,39 +24,39 @@ import java.util.List;
 @Service
 public class MyUserDetailService implements UserDetailsService {
 
-	private Logger log = LoggerFactory.getLogger(MyUserDetailService.class);
+  private Logger log = LoggerFactory.getLogger(MyUserDetailService.class);
 
-	@Autowired
-	private UserService userService;
-	@Autowired
-	private PermissionService permissionService;
+  @Autowired
+  private UserService userService;
+  @Autowired
+  private PermissionService permissionService;
 
-	public UserDetails loadUserByUsername(String username) {
-		User user = userService.findByUsername(username);
-		if (user != null) {
-			List<Permission> permissions = permissionService.findByAdminUserId(user.getId());
-			List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-			for (Permission permission : permissions) {
-				GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(permission.getName());
-				grantedAuthorities.add(grantedAuthority);
-			}
+  public UserDetails loadUserByUsername(String username) {
+    User user = userService.findByUsername(username);
+    if (user != null) {
+      List<Permission> permissions = permissionService.findByAdminUserId(user.getId());
+      List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+      for (Permission permission : permissions) {
+        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(permission.getName());
+        grantedAuthorities.add(grantedAuthority);
+      }
 
-			//重设权限上下文
-			SecurityContext context = SecurityContextHolder.getContext();
-			if(context.getAuthentication() != null) {
-				Object principal = context.getAuthentication().getPrincipal();
-				Object credentials = context.getAuthentication().getCredentials();
-				Authentication auth = new UsernamePasswordAuthenticationToken(principal, credentials, grantedAuthorities);
-				context.setAuthentication(auth);
-			}
+      //重设权限上下文
+      SecurityContext context = SecurityContextHolder.getContext();
+      if (context.getAuthentication() != null) {
+        Object principal = context.getAuthentication().getPrincipal();
+        Object credentials = context.getAuthentication().getCredentials();
+        Authentication auth = new UsernamePasswordAuthenticationToken(principal, credentials, grantedAuthorities);
+        context.setAuthentication(auth);
+      }
 
-			log.info("User: " + username + "'s permission updated!");
-			return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-					true, true, true, !user.getBlock(), grantedAuthorities);
-		} else {
-			log.info("User: " + username + " not exist");
-			throw new UsernameNotFoundException("Username or password incorrect");
-		}
-	}
+      log.info("User: " + username + "'s permission updated!");
+      return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+          true, true, true, !user.getBlock(), grantedAuthorities);
+    } else {
+      log.info("User: " + username + " not exist");
+      throw new UsernameNotFoundException("Username or password incorrect");
+    }
+  }
 
 }

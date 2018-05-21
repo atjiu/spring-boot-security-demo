@@ -23,78 +23,78 @@ import java.util.List;
 @Transactional
 public class UserService {
 
-	@Autowired
-	private UserRepository userRepository;
-	@Autowired
-	private MyUserDetailService myUserDetailService;
+  @Autowired
+  private UserRepository userRepository;
+  @Autowired
+  private MyUserDetailService myUserDetailService;
 
-	public User findById(int id) {
-		return userRepository.findById(id);
-	}
+  public User findById(int id) {
+    return userRepository.findById(id);
+  }
 
-	public User findByUsername(String username) {
-		return userRepository.findByUsername(username);
-	}
+  public User findByUsername(String username) {
+    return userRepository.findByUsername(username);
+  }
 
-	public User save(User user) {
-		return userRepository.save(user);
-	}
+  public User save(User user) {
+    return userRepository.save(user);
+  }
 
-	public User save(User user, Integer roleId) {
-		Role role = new Role();
-		role.setId(roleId);
-		user.setRole(role);
-		user = userRepository.save(user);
-		//更新用户的权限
-		myUserDetailService.loadUserByUsername(user.getUsername());
-		return user;
-	}
+  public User save(User user, Integer roleId) {
+    Role role = new Role();
+    role.setId(roleId);
+    user.setRole(role);
+    user = userRepository.save(user);
+    //更新用户的权限
+    myUserDetailService.loadUserByUsername(user.getUsername());
+    return user;
+  }
 
-	public Page<User> page(Integer pageNo, Integer pageSize) {
-		Pageable pageable = PageRequest.of(pageNo - 1, pageSize, Sort.Direction.DESC, "inTime");
-		return userRepository.findAll(pageable);
-	}
+  public Page<User> page(Integer pageNo, Integer pageSize) {
+    Pageable pageable = PageRequest.of(pageNo - 1, pageSize, Sort.Direction.DESC, "inTime");
+    return userRepository.findAll(pageable);
+  }
 
-	/**
-	 * 禁用用户
-	 *
-	 * @param id
-	 */
-	public void block(Integer id) {
-		User user = findById(id);
-		user.setBlock(true);
-		userRepository.save(user);
-	}
+  /**
+   * 禁用用户
+   *
+   * @param id
+   */
+  public void block(Integer id) {
+    User user = findById(id);
+    user.setBlock(true);
+    userRepository.save(user);
+  }
 
-	/**
-	 * 用户解禁
-	 *
-	 * @param id
-	 */
-	public void unBlock(Integer id) {
-		User user = findById(id);
-		user.setBlock(false);
-		userRepository.save(user);
-	}
+  /**
+   * 用户解禁
+   *
+   * @param id
+   */
+  public void unBlock(Integer id) {
+    User user = findById(id);
+    user.setBlock(false);
+    userRepository.save(user);
+  }
 
-	public void deleteById(Integer id) {
-		userRepository.deleteById(id);
-	}
+  public void deleteById(Integer id) {
+    userRepository.deleteById(id);
+  }
 
-	public void update(Integer id, String password, Integer roleId) {
-		User user = findById(id);
-		if(!StringUtils.isEmpty(password)) {
-			user.setPassword(new BCryptPasswordEncoder().encode(password));
-		}
-		Role role = new Role();
-		role.setId(roleId);
-		user.setRole(role);
-		userRepository.save(user);
-	}
+  public void update(Integer id, String password, Integer roleId) {
+    User user = findById(id);
+    if (!StringUtils.isEmpty(password)) {
+      user.setPassword(new BCryptPasswordEncoder().encode(password));
+    }
+    Role role = new Role();
+    role.setId(roleId);
+    user.setRole(role);
+    userRepository.save(user);
+  }
 
-	public void updatePermission() {
-		List<User> users = userRepository.findAll();
-		users.forEach(user -> myUserDetailService.loadUserByUsername(user.getUsername()));
-	}
+  public void updatePermission() {
+    List<User> users = userRepository.findAll();
+    users.forEach(user -> myUserDetailService.loadUserByUsername(user.getUsername()));
+  }
 
 }

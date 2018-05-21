@@ -25,71 +25,71 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	private MyUserDetailService myUserDetailService;
-	@Autowired
-	private MyFilterSecurityInterceptor myFilterSecurityInterceptor;
-	@Autowired
-	private MyCustomAuthenticationFilter myCustomAuthenticationFilter;
-	@Autowired
-	private PersistentTokenService persistentTokenService;
+  @Autowired
+  private MyUserDetailService myUserDetailService;
+  @Autowired
+  private MyFilterSecurityInterceptor myFilterSecurityInterceptor;
+  @Autowired
+  private MyCustomAuthenticationFilter myCustomAuthenticationFilter;
+  @Autowired
+  private PersistentTokenService persistentTokenService;
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
-				.antMatchers("/admin/**")
-				.authenticated();
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http.authorizeRequests()
+        .antMatchers("/admin/**")
+        .authenticated();
 
-		http.formLogin()
-				.loginPage("/adminlogin")
-				.loginProcessingUrl("/adminlogin")
-				.failureUrl("/adminlogin?error")
-				.defaultSuccessUrl("/admin/dashboard")
-				.permitAll();
+    http.formLogin()
+        .loginPage("/adminlogin")
+        .loginProcessingUrl("/adminlogin")
+        .failureUrl("/adminlogin?error")
+        .defaultSuccessUrl("/admin/dashboard")
+        .permitAll();
 
 //		http.rememberMe().key("remember-me").rememberMeServices(persistentTokenBasedRememberMeServices());
 
-		http.logout()
-				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-				.logoutSuccessUrl("/adminlogin")
-				.deleteCookies("JSESSIONID", "remember-me");
+    http.logout()
+        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+        .logoutSuccessUrl("/adminlogin")
+        .deleteCookies("JSESSIONID", "remember-me");
 
 //		myCustomAuthenticationFilter.setAuthenticationManager(authenticationManager);
 
-		http.addFilterBefore(myFilterSecurityInterceptor, FilterSecurityInterceptor.class);
-		http.addFilterBefore(myCustomAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+    http.addFilterBefore(myFilterSecurityInterceptor, FilterSecurityInterceptor.class);
+    http.addFilterBefore(myCustomAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-		http.csrf().ignoringAntMatchers("/favicon.ico");
-	}
+    http.csrf().ignoringAntMatchers("/favicon.ico");
+  }
 
-	@Override
-	public void configure(WebSecurity web) {
-		web.ignoring().antMatchers("/static/**");
-	}
+  @Override
+  public void configure(WebSecurity web) {
+    web.ignoring().antMatchers("/static/**");
+  }
 
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-		authProvider.setPasswordEncoder(new BCryptPasswordEncoder());
-		authProvider.setUserDetailsService(myUserDetailService);
+  @Autowired
+  public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+    authProvider.setPasswordEncoder(new BCryptPasswordEncoder());
+    authProvider.setUserDetailsService(myUserDetailService);
 //		ReflectionSaltSource saltSource = new ReflectionSaltSource();
 //		saltSource.setUserPropertyToUse("username");
 //		authProvider.setSaltSource(saltSource);
-		auth.authenticationProvider(authProvider);
-		auth.userDetailsService(myUserDetailService);
-	}
+    auth.authenticationProvider(authProvider);
+    auth.userDetailsService(myUserDetailService);
+  }
 
 //	@Override
 //	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 //		auth.userDetailsService(myUserDetailService).passwordEncoder(new BCryptPasswordEncoder());
 //	}
 
-	@Bean
-	public PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices() {
-		PersistentTokenBasedRememberMeServices services = new PersistentTokenBasedRememberMeServices("remember-me"
-				, myUserDetailService, persistentTokenService);
-		services.setAlwaysRemember(true);
-		return services;
-	}
+  @Bean
+  public PersistentTokenBasedRememberMeServices persistentTokenBasedRememberMeServices() {
+    PersistentTokenBasedRememberMeServices services = new PersistentTokenBasedRememberMeServices("remember-me"
+        , myUserDetailService, persistentTokenService);
+    services.setAlwaysRemember(true);
+    return services;
+  }
 
 }

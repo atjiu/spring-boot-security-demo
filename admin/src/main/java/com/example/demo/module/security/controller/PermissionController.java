@@ -17,56 +17,56 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/admin/permission")
 public class PermissionController {
 
-	@Autowired
-	private PermissionService permissionService;
+  @Autowired
+  private PermissionService permissionService;
 
-	@GetMapping("/list")
-	public String list(Integer pid, Model model) {
-		if (pid == null || pid == 0) {
-			model.addAttribute("childPermissions", permissionService.findAll(true));
-			model.addAttribute("permissions", permissionService.findByPid(0));
-		} else {
-			model.addAttribute("childPermissions", permissionService.findByPid(pid));
-			model.addAttribute("permissions", permissionService.findByPid(0));
-		}
-		model.addAttribute("pid", pid);
-		return "admin/permission/list";
-	}
+  @GetMapping("/list")
+  public String list(Integer pid, Model model) {
+    if (pid == null || pid == 0) {
+      model.addAttribute("childPermissions", permissionService.findAll(true));
+      model.addAttribute("permissions", permissionService.findByPid(0));
+    } else {
+      model.addAttribute("childPermissions", permissionService.findByPid(pid));
+      model.addAttribute("permissions", permissionService.findByPid(0));
+    }
+    model.addAttribute("pid", pid);
+    return "admin/permission/list";
+  }
 
-	@GetMapping("/add")
-	public String add(Model model, Integer pid) {
-		model.addAttribute("permissions", permissionService.findByPid(0));
-		model.addAttribute("pid", pid);
-		return "admin/permission/add";
-	}
+  @GetMapping("/add")
+  public String add(Model model, Integer pid) {
+    model.addAttribute("permissions", permissionService.findByPid(0));
+    model.addAttribute("pid", pid);
+    return "admin/permission/add";
+  }
 
-	@PostMapping("/add")
-	public String save(Permission permission) {
-		permissionService.save(permission);
-		if(permission.getPid() > 0) {
-			return "redirect:/admin/permission/list?pid=" + permission.getPid();
-		} else {
-			return "redirect:/admin/permission/list";
-		}
-	}
+  @PostMapping("/add")
+  public String save(Permission permission) {
+    permissionService.save(permission);
+    if (permission.getPid() > 0) {
+      return "redirect:/admin/permission/list?pid=" + permission.getPid();
+    } else {
+      return "redirect:/admin/permission/list";
+    }
+  }
 
-	@GetMapping("/edit")
-	public String edit(Integer id, Model model) {
-		model.addAttribute("permissions", permissionService.findByPid(0));
-		model.addAttribute("permission", permissionService.findById(id));
-		return "admin/permission/edit";
-	}
+  @GetMapping("/edit")
+  public String edit(Integer id, Model model) {
+    model.addAttribute("permissions", permissionService.findByPid(0));
+    model.addAttribute("permission", permissionService.findById(id));
+    return "admin/permission/edit";
+  }
 
-	@PostMapping("/edit")
-	public String update(Permission permission) {
-		permissionService.save(permission);
-		return "redirect:/admin/permission/list?pid=" + permission.getPid();
-	}
+  @PostMapping("/edit")
+  public String update(Permission permission) {
+    permissionService.save(permission);
+    return "redirect:/admin/permission/list?pid=" + permission.getPid();
+  }
 
-	@GetMapping("/delete")
-	public String delete(Integer id) {
-		permissionService.deleteById(id);
-		return "redirect:/admin/permission/list";
-	}
+  @GetMapping("/delete")
+  public String delete(Integer id) {
+    permissionService.deleteById(id);
+    return "redirect:/admin/permission/list";
+  }
 
 }

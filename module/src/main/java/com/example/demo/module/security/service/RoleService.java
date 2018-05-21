@@ -20,43 +20,43 @@ import java.util.Set;
 @Transactional
 public class RoleService {
 
-	@Autowired
-	private UserService userService;
-	@Autowired
-	private RoleRepository roleRepository;
-	@Autowired
-	private PermissionService permissionService;
-	@Autowired
-	private MyInvocationSecurityMetadataSource myInvocationSecurityMetadataSource;
+  @Autowired
+  private UserService userService;
+  @Autowired
+  private RoleRepository roleRepository;
+  @Autowired
+  private PermissionService permissionService;
+  @Autowired
+  private MyInvocationSecurityMetadataSource myInvocationSecurityMetadataSource;
 
-	public List<Role> findAll() {
-		return roleRepository.findAll();
-	}
+  public List<Role> findAll() {
+    return roleRepository.findAll();
+  }
 
-	public void deleteById(Integer id) {
-		Role role = findById(id);
-		roleRepository.delete(role);
-		//重新加载权限
-		myInvocationSecurityMetadataSource.loadResourceDefine();
-	}
+  public void deleteById(Integer id) {
+    Role role = findById(id);
+    roleRepository.delete(role);
+    //重新加载权限
+    myInvocationSecurityMetadataSource.loadResourceDefine();
+  }
 
-	public Role findById(int id) {
-		return roleRepository.findById(id);
-	}
+  public Role findById(int id) {
+    return roleRepository.findById(id);
+  }
 
-	public void save(Role role, Integer[] permissionIds) {
-		if(permissionIds != null && permissionIds.length > 0) {
-			Set<Permission> set = new HashSet<>();
-			for(Integer permissionId : permissionIds) {
-				Permission permission = permissionService.findById(permissionId);
-				permission.setId(permissionId);
-				set.add(permission);
-			}
-			role.setPermissions(set);
-		}
-		roleRepository.save(role);
-		//重新加载权限
-		myInvocationSecurityMetadataSource.loadResourceDefine();
-		userService.updatePermission();
-	}
+  public void save(Role role, Integer[] permissionIds) {
+    if (permissionIds != null && permissionIds.length > 0) {
+      Set<Permission> set = new HashSet<>();
+      for (Integer permissionId : permissionIds) {
+        Permission permission = permissionService.findById(permissionId);
+        permission.setId(permissionId);
+        set.add(permission);
+      }
+      role.setPermissions(set);
+    }
+    roleRepository.save(role);
+    //重新加载权限
+    myInvocationSecurityMetadataSource.loadResourceDefine();
+    userService.updatePermission();
+  }
 }

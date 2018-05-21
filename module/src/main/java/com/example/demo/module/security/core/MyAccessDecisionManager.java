@@ -14,46 +14,46 @@ import java.util.Iterator;
 @Service
 public class MyAccessDecisionManager implements AccessDecisionManager {
 
-	/**
-	 * @param authentication
-	 * @param object
-	 * @param configAttributes
-	 * @throws AccessDeniedException
-	 * @throws InsufficientAuthenticationException
-	 */
-	@Override
-	public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes) {
-		if (null == configAttributes || configAttributes.size() <= 0) {
-			return;
-		}
-		String needRole;
-		for (ConfigAttribute configAttribute : configAttributes) {
-			needRole = configAttribute.getAttribute();
-			for (GrantedAuthority ga : authentication.getAuthorities()) {
-				if (needRole.trim().equals(ga.getAuthority())) {
-					return;
-				}
-			}
-		}
-		throw new AccessDeniedException("no right");
-	}
+  /**
+   * @param authentication
+   * @param object
+   * @param configAttributes
+   * @throws AccessDeniedException
+   * @throws InsufficientAuthenticationException
+   */
+  @Override
+  public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes) {
+    if (null == configAttributes || configAttributes.size() <= 0) {
+      return;
+    }
+    String needRole;
+    for (ConfigAttribute configAttribute : configAttributes) {
+      needRole = configAttribute.getAttribute();
+      for (GrantedAuthority ga : authentication.getAuthorities()) {
+        if (needRole.trim().equals(ga.getAuthority())) {
+          return;
+        }
+      }
+    }
+    throw new AccessDeniedException("no right");
+  }
 
-	/**
-	 * @param attribute
-	 * @return
-	 */
-	@Override
-	public boolean supports(ConfigAttribute attribute) {
-		return true;
-	}
+  /**
+   * @param attribute
+   * @return
+   */
+  @Override
+  public boolean supports(ConfigAttribute attribute) {
+    return true;
+  }
 
-	/**
-	 * @param clazz
-	 * @return
-	 */
-	@Override
-	public boolean supports(Class<?> clazz) {
-		return true;
-	}
+  /**
+   * @param clazz
+   * @return
+   */
+  @Override
+  public boolean supports(Class<?> clazz) {
+    return true;
+  }
 
 }

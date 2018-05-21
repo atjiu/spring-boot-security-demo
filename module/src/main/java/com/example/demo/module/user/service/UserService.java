@@ -51,8 +51,7 @@ public class UserService {
 	}
 
 	public Page<User> page(Integer pageNo, Integer pageSize) {
-		Sort sort = new Sort(new Sort.Order(Sort.Direction.DESC, "inTime"));
-		Pageable pageable = new PageRequest(pageNo - 1, pageSize, sort);
+		Pageable pageable = PageRequest.of(pageNo - 1, pageSize, Sort.Direction.DESC, "inTime");
 		return userRepository.findAll(pageable);
 	}
 

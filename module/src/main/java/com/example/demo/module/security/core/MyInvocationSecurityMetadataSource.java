@@ -2,7 +2,8 @@ package com.example.demo.module.security.core;
 
 import com.example.demo.module.security.model.Permission;
 import com.example.demo.module.security.service.PermissionService;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
@@ -17,7 +18,7 @@ import java.util.*;
 @Service
 public class MyInvocationSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
 
-	Logger log = Logger.getLogger(MyInvocationSecurityMetadataSource.class);
+	private Logger log = LoggerFactory.getLogger(MyInvocationSecurityMetadataSource.class);
 
 	@Autowired
 	private PermissionService permissionService;

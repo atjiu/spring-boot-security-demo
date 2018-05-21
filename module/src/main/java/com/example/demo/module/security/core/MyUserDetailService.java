@@ -4,7 +4,8 @@ import com.example.demo.module.security.model.Permission;
 import com.example.demo.module.security.service.PermissionService;
 import com.example.demo.module.user.model.User;
 import com.example.demo.module.user.service.UserService;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,7 +24,7 @@ import java.util.List;
 @Service
 public class MyUserDetailService implements UserDetailsService {
 
-	private Logger log = Logger.getLogger(MyUserDetailService.class);
+	private Logger log = LoggerFactory.getLogger(MyUserDetailService.class);
 
 	@Autowired
 	private UserService userService;

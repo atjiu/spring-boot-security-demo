@@ -23,6 +23,14 @@
           </a>
         </li>
       </#if>
+      <#if sec.allGranted("schedule:list")>
+        <li <#if page_tab == 'schedule_list'>class="active"</#if>>
+          <a href="/admin/schedule/list">
+            <i class="fa fa-dashboard"></i>
+            <span>定时器</span>
+          </a>
+        </li>
+      </#if>
       <#if sec.allGranted("admin_user:list") || sec.allGranted("role:list") || sec.allGranted("permission:list")>
         <li class="treeview <#if page_tab?index_of("user_") == 0>active</#if>">
           <a href="javascript:;">
@@ -50,7 +58,7 @@
         </li>
       </#if>
       <li>
-        <a href="/logout">
+        <a href="/admin/logout">
           <span class="glyphicon glyphicon-log-out"></span>
           <span>登出</span>
         </a>

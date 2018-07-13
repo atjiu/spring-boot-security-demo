@@ -18,7 +18,16 @@ VALUES
 	(18,'角色列表','role:list',11,'/admin/role/list'),
 	(19,'编辑角色','role:edit',11,'/admin/role/edit'),
 	(20,'添加角色','role:add',11,'/admin/role/add'),
-	(21,'删除角色','role:delete',11,'/admin/role/delete');
+	(21,'删除角色','role:delete',11,'/admin/role/delete'),
+	(22, '定时器', 'schedule', 0, ''),
+	(23, '定时任务', 'schedule:list', 22, '/admin/schedule/list'),
+	(24, '添加', 'schedule:add', 22, '/admin/schedule/add'),
+	(25, '修改', 'schedule:edit', 22, '/admin/schedule/edit'),
+	(26, '删除', 'schedule:delete', 22, '/admin/schedule/delete'),
+	(27, '恢复', 'schedule:resume', 22, '/admin/schedule/resume'),
+	(28, '暂停', 'schedule:stop', 22, '/admin/schedule/stop'),
+	(29, '立即运行', 'schedule:start_now', 22, '/admin/schedule/startNow');
+
 
 INSERT INTO `role` (`id`, `description`, `name`)
 VALUES
@@ -42,7 +51,15 @@ VALUES
 	(1,18),
 	(1,19),
 	(1,20),
-	(1,21);
+	(1,21),
+	(1, 23),
+	(1, 24),
+	(1, 25),
+	(1, 26),
+	(1, 27),
+	(1, 28),
+	(1, 29);
+
 
 INSERT INTO `admin_user` (`id`, `attempts`, `attempts_time`, `block`, `in_time`, `password`, `username`, `role_id`)
 VALUES

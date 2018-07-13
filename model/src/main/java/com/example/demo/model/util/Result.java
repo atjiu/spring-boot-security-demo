@@ -11,7 +11,7 @@ public class Result {
 
   private Object detail;
 
-  public Result error(String description) {
+  public static Result error(String description) {
     Result result = new Result();
     result.setCode(201);
     result.setDescription(description);
